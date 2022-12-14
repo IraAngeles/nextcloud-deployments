@@ -16,11 +16,12 @@ spec:
     spec:
       containers:
       - name: nextcloud
-        image: sirtedious/nextcloud-fix:latest #Add your own image if you'd like
+        image: docker.io/sirtedious/nextcloud-fix:latest #Add your own image if you'd like
+        imagePullSecrets:
+        - name: dockerhub
         volumeMounts:
         - name: server-storage
           mountPath: /var/www/html
-          subPath: server-data
       volumes:
       - name: server-storage
         persistentVolumeClaim:
@@ -39,16 +40,18 @@ spec:
   - protocol: TCP
     port: 8080
     name: 8080-tcp
+  type: NodePort
 ---
-kind: Route
-apiVersion: route.openshift.io/v1
-metadata:
-  name: nextcloud-server
-spec:
-  host: probni-deploy.apps.dos-cloud.lan.croz.net 
-  to:
-    kind: Service
-    name: nextcloud-server
-    weight: 100
-  port:
-    targetPort: 8080-tcp
+# kind: Route
+# apiVersion: route.openshift.io/v1
+# metadata:
+#   name: nextcloud-server
+# spec:
+#   # host: probni-deploy.apps.dos-cloud.lan.croz.net 
+#   to:
+#     kind: Service
+#     name: nextcloud-server
+#     weight: 100
+#   port:
+#     targetPort: 8080-tcp
+#   type: NodePort

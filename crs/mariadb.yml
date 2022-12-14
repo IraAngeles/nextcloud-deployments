@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mariadb
-        image: mariadb
+        image: quay.io/centos7/mariadb-105-centos7
         env:
         - name: MYSQL_DATABASE
           value: mariadb_nextcloud
@@ -26,11 +26,10 @@ spec:
         volumeMounts:
         - name: db-storage
           mountPath: /var/lib/mysql
-          subPath: mysql-data
       volumes:
       - name: db-storage
         persistentVolumeClaim:
-          claimName: nextcloud-storage-claim
+          claimName: nc-mariadb-storage-claim
 ---
 apiVersion: v1
 kind: Service
